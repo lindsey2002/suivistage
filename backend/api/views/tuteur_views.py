@@ -3,11 +3,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from ..models import Rapport, Affectation, Evaluation, User
+from drf_spectacular.utils import extend_schema, OpenApiExample
+from ..models import Rapport, Affectation, Evaluation
 from ..serializers import (
     RapportSerializer, RapportValidationSerializer,
     EvaluationSerializer, EvaluationWriteSerializer,
-    AffectationSerializer, UserPublicSerializer
+    AffectationSerializer
 )
 from ..permissions import IsTuteur
 
@@ -15,6 +16,10 @@ from ..permissions import IsTuteur
 class MesStagiairesView(APIView):
     permission_classes = [IsAuthenticated, IsTuteur]
 
+    @extend_schema(
+        summary="Lister mes stagiaires",
+        tags=['Tuteur'],
+    )
     def get(self, request):
         affectations = (
             Affectation.objects
@@ -30,8 +35,11 @@ class MesStagiairesView(APIView):
 class RapportsASvaliderView(APIView):
     permission_classes = [IsAuthenticated, IsTuteur]
 
+    @extend_schema(
+        summary="Lister les rapports de mes stagiaires",
+        tags=['Tuteur'],
+    )
     def get(self, request):
-        # Récupérer les stagiaires du tuteur connecté
         stagiaire_ids = Affectation.objects.filter(
             tuteur=request.user
         ).values_list('stagiaire_id', flat=True)
@@ -52,8 +60,28 @@ class RapportsASvaliderView(APIView):
 class ValiderRapportView(APIView):
     permission_classes = [IsAuthenticated, IsTuteur]
 
+    @extend_schema(
+        summary="Valider ou rejeter un rapport",
+        request=RapportValidationSerializer,
+        tags=['Tuteur'],
+        examples=[
+            OpenApiExample(
+                'Exemple validation',
+                value={
+                    'statut': 'valide',
+                    'commentaire_tuteur': '',
+                }
+            ),
+            OpenApiExample(
+                'Exemple rejet',
+                value={
+                    'statut': 'rejete',
+                    'commentaire_tuteur': 'Le contenu est insuffisant, merci de détailler les tâches effectuées.',
+                }
+            ),
+        ]
+    )
     def post(self, request, pk):
-        # Vérifier que le rapport appartient à un stagiaire du tuteur
         stagiaire_ids = Affectation.objects.filter(
             tuteur=request.user
         ).values_list('stagiaire_id', flat=True)
@@ -66,7 +94,6 @@ class ValiderRapportView(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        # Règle métier : seulement les rapports en_attente peuvent être traités
         if rapport.statut != 'en_attente':
             return Response(
                 {'message': 'Ce rapport a déjà été traité.'},
@@ -94,6 +121,10 @@ class ValiderRapportView(APIView):
 class MesEvaluationsView(APIView):
     permission_classes = [IsAuthenticated, IsTuteur]
 
+    @extend_schema(
+        summary="Lister mes évaluations rédigées",
+        tags=['Tuteur'],
+    )
     def get(self, request):
         affectations = Affectation.objects.filter(
             tuteur=request.user
@@ -113,8 +144,23 @@ class MesEvaluationsView(APIView):
 class CreerEvaluationView(APIView):
     permission_classes = [IsAuthenticated, IsTuteur]
 
+    @extend_schema(
+        summary="Rédiger l'évaluation finale d'un stagiaire",
+        request=EvaluationWriteSerializer,
+        tags=['Tuteur'],
+        examples=[
+            OpenApiExample(
+                'Exemple évaluation',
+                value={
+                    'note': 15.50,
+                    'appreciation': 'Très bon stagiaire, sérieux et impliqué.',
+                    'points_forts': 'Autonomie, qualité du code, respect des délais.',
+                    'points_ameliorer': 'Améliorer la communication écrite.',
+                }
+            )
+        ]
+    )
     def post(self, request, stagiaire_id):
-        # Vérifier que le stagiaire appartient bien au tuteur connecté
         try:
             affectation = Affectation.objects.get(
                 tuteur=request.user,
@@ -126,7 +172,6 @@ class CreerEvaluationView(APIView):
                 status=status.HTTP_403_FORBIDDEN,
             )
 
-        # Règle métier : une seule évaluation par stage
         if Evaluation.objects.filter(affectation=affectation).exists():
             return Response(
                 {'message': 'Une évaluation existe déjà pour ce stagiaire.'},

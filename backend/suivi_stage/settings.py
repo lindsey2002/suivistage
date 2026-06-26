@@ -56,7 +56,7 @@ DATABASES = {
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-       # 'api.authentication.JWTAuthentication',
+        'api.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -85,4 +85,9 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'SuiviStage API',
     'DESCRIPTION': 'API de suivi des stagiaires — rapports, validations, évaluations',
     'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_SETTINGS': {
+        'persistAuthorization': True,
+    },
+    
 }

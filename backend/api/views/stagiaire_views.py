@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from drf_spectacular.utils import extend_schema, OpenApiExample
 from ..models import Rapport, Livrable, Affectation, Evaluation
 from ..serializers import (
     RapportSerializer, RapportWriteSerializer,
@@ -14,6 +15,10 @@ from ..permissions import IsStagiaire
 class MesRapportsView(APIView):
     permission_classes = [IsAuthenticated, IsStagiaire]
 
+    @extend_schema(
+        summary="Lister mes rapports hebdomadaires",
+        tags=['Stagiaire'],
+    )
     def get(self, request):
         rapports = (
             Rapport.objects
@@ -26,8 +31,23 @@ class MesRapportsView(APIView):
             'data': RapportSerializer(rapports, many=True).data
         })
 
+    @extend_schema(
+        summary="Soumettre un rapport hebdomadaire",
+        request=RapportWriteSerializer,
+        tags=['Stagiaire'],
+        examples=[
+            OpenApiExample(
+                'Exemple rapport',
+                value={
+                    'semaine': 1,
+                    'date_debut_sem': '2026-01-05',
+                    'date_fin_sem': '2026-01-11',
+                    'contenu': 'Cette semaine j\'ai travaillé sur la mise en place du projet.',
+                }
+            )
+        ]
+    )
     def post(self, request):
-        # Vérifier que le stagiaire a une affectation active
         affectation = Affectation.objects.filter(
             stagiaire=request.user
         ).first()
@@ -45,7 +65,6 @@ class MesRapportsView(APIView):
             )
         data = serializer.validated_data
 
-        # Règle métier : un seul rapport par semaine
         if Rapport.objects.filter(
             stagiaire=request.user,
             stage=affectation.stage,
@@ -77,6 +96,10 @@ class MesRapportsView(APIView):
 class RapportDetailView(APIView):
     permission_classes = [IsAuthenticated, IsStagiaire]
 
+    @extend_schema(
+        summary="Détail d'un rapport",
+        tags=['Stagiaire'],
+    )
     def get(self, request, pk):
         try:
             rapport = Rapport.objects.prefetch_related('livrables').get(
@@ -92,6 +115,22 @@ class RapportDetailView(APIView):
             'data': RapportSerializer(rapport).data
         })
 
+    @extend_schema(
+        summary="Modifier un rapport en attente ou rejeté",
+        request=RapportWriteSerializer,
+        tags=['Stagiaire'],
+        examples=[
+            OpenApiExample(
+                'Exemple modification',
+                value={
+                    'semaine': 1,
+                    'date_debut_sem': '2026-01-05',
+                    'date_fin_sem': '2026-01-11',
+                    'contenu': 'Contenu corrigé après retour du tuteur.',
+                }
+            )
+        ]
+    )
     def put(self, request, pk):
         try:
             rapport = Rapport.objects.get(pk=pk, stagiaire=request.user)
@@ -101,7 +140,6 @@ class RapportDetailView(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        # Règle métier : modifiable seulement si en_attente ou rejete
         if rapport.statut not in ('en_attente', 'rejete'):
             return Response(
                 {'message': 'Ce rapport ne peut plus être modifié.'},
@@ -129,6 +167,21 @@ class RapportDetailView(APIView):
 class LivrableCreateView(APIView):
     permission_classes = [IsAuthenticated, IsStagiaire]
 
+    @extend_schema(
+        summary="Ajouter un livrable à un rapport",
+        request=LivrableWriteSerializer,
+        tags=['Stagiaire'],
+        examples=[
+            OpenApiExample(
+                'Exemple livrable lien',
+                value={
+                    'nom': 'Rapport PDF semaine 1',
+                    'type': 'lien',
+                    'url_ou_chemin': 'https://drive.google.com/mon-rapport',
+                }
+            )
+        ]
+    )
     def post(self, request, rapport_pk):
         try:
             rapport = Rapport.objects.get(pk=rapport_pk, stagiaire=request.user)
@@ -169,6 +222,10 @@ class LivrableCreateView(APIView):
 class MonEvaluationView(APIView):
     permission_classes = [IsAuthenticated, IsStagiaire]
 
+    @extend_schema(
+        summary="Consulter mon évaluation finale",
+        tags=['Stagiaire'],
+    )
     def get(self, request):
         affectation = Affectation.objects.filter(
             stagiaire=request.user

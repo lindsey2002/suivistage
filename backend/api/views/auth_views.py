@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from drf_spectacular.utils import extend_schema, OpenApiExample
 from ..models import User
 from ..serializers import RegisterSerializer, LoginSerializer, UserPublicSerializer
 
@@ -23,6 +24,24 @@ def generate_token(user):
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="Inscription d'un nouvel utilisateur",
+        request=RegisterSerializer,
+        tags=['Authentification'],
+        examples=[
+            OpenApiExample(
+                'Exemple inscription',
+                value={
+                    'nom': 'Diallo',
+                    'prenom': 'Mamadou',
+                    'email': 'stagiaire@suivistage.com',
+                    'mot_de_passe': 'password123',
+                    'mot_de_passe_confirmation': 'password123',
+                    'role': 'stagiaire'
+                }
+            )
+        ]
+    )
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if not serializer.is_valid():
@@ -53,6 +72,20 @@ class RegisterView(APIView):
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        summary="Connexion et obtention du token JWT",
+        request=LoginSerializer,
+        tags=['Authentification'],
+        examples=[
+            OpenApiExample(
+                'Exemple connexion',
+                value={
+                    'email': 'admin@suivistage.com',
+                    'mot_de_passe': 'password123',
+                }
+            )
+        ]
+    )
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if not serializer.is_valid():
@@ -84,6 +117,10 @@ class LoginView(APIView):
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        summary="Déconnexion",
+        tags=['Authentification'],
+    )
     def post(self, request):
         return Response({'message': 'Déconnexion réussie. Supprimez le token côté client.'})
 
@@ -91,6 +128,10 @@ class LogoutView(APIView):
 class MeView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        summary="Profil de l'utilisateur connecté",
+        tags=['Authentification'],
+    )
     def get(self, request):
         return Response({
             'message': 'Profil récupéré.',

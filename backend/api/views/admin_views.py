@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from drf_spectacular.utils import extend_schema, OpenApiExample
 from ..models import User, Stage, Affectation, Rapport, Evaluation
 from ..serializers import (
     UserPublicSerializer,
@@ -17,6 +18,10 @@ from ..permissions import IsAdministrateur
 class AdminUserListView(APIView):
     permission_classes = [IsAuthenticated, IsAdministrateur]
 
+    @extend_schema(
+        summary="Lister tous les utilisateurs",
+        tags=['Admin - Users'],
+    )
     def get(self, request):
         users = User.objects.all().order_by('role', 'nom')
         return Response({
@@ -28,6 +33,10 @@ class AdminUserListView(APIView):
 class AdminUserDetailView(APIView):
     permission_classes = [IsAuthenticated, IsAdministrateur]
 
+    @extend_schema(
+        summary="Détail d'un utilisateur",
+        tags=['Admin - Users'],
+    )
     def get(self, request, pk):
         try:
             user = User.objects.get(pk=pk)
@@ -41,6 +50,10 @@ class AdminUserDetailView(APIView):
             'data': UserPublicSerializer(user).data
         })
 
+    @extend_schema(
+        summary="Supprimer un utilisateur",
+        tags=['Admin - Users'],
+    )
     def delete(self, request, pk):
         try:
             user = User.objects.get(pk=pk)
@@ -61,6 +74,10 @@ class AdminUserDetailView(APIView):
 class AdminToggleUserView(APIView):
     permission_classes = [IsAuthenticated, IsAdministrateur]
 
+    @extend_schema(
+        summary="Activer ou désactiver un utilisateur",
+        tags=['Admin - Users'],
+    )
     def post(self, request, pk):
         try:
             user = User.objects.get(pk=pk)
@@ -88,6 +105,10 @@ class AdminToggleUserView(APIView):
 class AdminStageListCreateView(APIView):
     permission_classes = [IsAuthenticated, IsAdministrateur]
 
+    @extend_schema(
+        summary="Lister tous les stages",
+        tags=['Admin - Stages'],
+    )
     def get(self, request):
         stages = Stage.objects.all().order_by('-date_creation')
         return Response({
@@ -95,6 +116,23 @@ class AdminStageListCreateView(APIView):
             'data': StageSerializer(stages, many=True).data
         })
 
+    @extend_schema(
+        summary="Créer un stage",
+        request=StageWriteSerializer,
+        tags=['Admin - Stages'],
+        examples=[
+            OpenApiExample(
+                'Exemple stage',
+                value={
+                    'titre': 'Stage développement web',
+                    'description': 'Développement d\'une application web en Django.',
+                    'entreprise': 'Tech Dakar SARL',
+                    'date_debut': '2026-07-01',
+                    'date_fin': '2026-09-30',
+                }
+            )
+        ]
+    )
     def post(self, request):
         serializer = StageWriteSerializer(data=request.data)
         if not serializer.is_valid():
@@ -122,6 +160,10 @@ class AdminStageListCreateView(APIView):
 class AdminStageDetailView(APIView):
     permission_classes = [IsAuthenticated, IsAdministrateur]
 
+    @extend_schema(
+        summary="Détail d'un stage",
+        tags=['Admin - Stages'],
+    )
     def get(self, request, pk):
         try:
             stage = Stage.objects.get(pk=pk)
@@ -135,6 +177,23 @@ class AdminStageDetailView(APIView):
             'data': StageSerializer(stage).data
         })
 
+    @extend_schema(
+        summary="Modifier un stage",
+        request=StageWriteSerializer,
+        tags=['Admin - Stages'],
+        examples=[
+            OpenApiExample(
+                'Exemple modification',
+                value={
+                    'titre': 'Stage développement web modifié',
+                    'description': 'Description mise à jour.',
+                    'entreprise': 'Tech Dakar SARL',
+                    'date_debut': '2026-07-01',
+                    'date_fin': '2026-10-31',
+                }
+            )
+        ]
+    )
     def put(self, request, pk):
         try:
             stage = Stage.objects.get(pk=pk)
@@ -161,6 +220,10 @@ class AdminStageDetailView(APIView):
             'data': StageSerializer(stage).data
         })
 
+    @extend_schema(
+        summary="Supprimer un stage",
+        tags=['Admin - Stages'],
+    )
     def delete(self, request, pk):
         try:
             stage = Stage.objects.get(pk=pk)
@@ -178,6 +241,10 @@ class AdminStageDetailView(APIView):
 class AdminAffectationListCreateView(APIView):
     permission_classes = [IsAuthenticated, IsAdministrateur]
 
+    @extend_schema(
+        summary="Lister toutes les affectations",
+        tags=['Admin - Affectations'],
+    )
     def get(self, request):
         affectations = (
             Affectation.objects
@@ -190,6 +257,21 @@ class AdminAffectationListCreateView(APIView):
             'data': AffectationSerializer(affectations, many=True).data
         })
 
+    @extend_schema(
+        summary="Créer une affectation stagiaire-tuteur",
+        request=AffectationWriteSerializer,
+        tags=['Admin - Affectations'],
+        examples=[
+            OpenApiExample(
+                'Exemple affectation',
+                value={
+                    'stagiaire_id': 2,
+                    'tuteur_id': 3,
+                    'stage_id': 1,
+                }
+            )
+        ]
+    )
     def post(self, request):
         serializer = AffectationWriteSerializer(data=request.data)
         if not serializer.is_valid():
@@ -218,6 +300,10 @@ class AdminAffectationListCreateView(APIView):
 class AdminAffectationDetailView(APIView):
     permission_classes = [IsAuthenticated, IsAdministrateur]
 
+    @extend_schema(
+        summary="Supprimer une affectation",
+        tags=['Admin - Affectations'],
+    )
     def delete(self, request, pk):
         try:
             affectation = Affectation.objects.get(pk=pk)
@@ -235,6 +321,10 @@ class AdminAffectationDetailView(APIView):
 class AdminRapportListView(APIView):
     permission_classes = [IsAuthenticated, IsAdministrateur]
 
+    @extend_schema(
+        summary="Lister tous les rapports",
+        tags=['Admin - Rapports'],
+    )
     def get(self, request):
         rapports = (
             Rapport.objects
@@ -254,6 +344,10 @@ class AdminRapportListView(APIView):
 class AdminEvaluationListView(APIView):
     permission_classes = [IsAuthenticated, IsAdministrateur]
 
+    @extend_schema(
+        summary="Lister toutes les évaluations",
+        tags=['Admin - Evaluations'],
+    )
     def get(self, request):
         evaluations = (
             Evaluation.objects
