@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SuiviStage — Mon Évaluation</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+
+  <div class="dashboard-layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon"></div>
+        <span>SuiviStage</span>
+      </div>
+      <div class="sidebar-role"><span>Stagiaire</span></div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item">Dashboard</a>
+        <a href="rapports.html" class="nav-item">Mes rapports</a>
+        <a href="evaluation.html" class="nav-item active">Mon évaluation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar" id="user-avatar">S</div>
+          <div class="sidebar-user-info">
+            <span id="user-name">Chargement...</span>
+            <span>Stagiaire</span>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="logout()">Déconnexion</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <div class="page-header">
+        <h1>Mon évaluation</h1>
+        <p>Évaluation de fin de stage rédigée par votre tuteur</p>
+      </div>
+
+      <div id="evaluation-content">
+        <p style="color:#64748B;">Chargement...</p>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/stagiaire-evaluation.js"></script>
+
+</body>
+</html>

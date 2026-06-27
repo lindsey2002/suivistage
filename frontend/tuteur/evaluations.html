@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SuiviStage — Mes Évaluations</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+
+  <div class="dashboard-layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon"></div>
+        <span>SuiviStage</span>
+      </div>
+      <div class="sidebar-role"><span>Tuteur</span></div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item">Dashboard</a>
+        <a href="stagiaires.html" class="nav-item">Mes stagiaires</a>
+        <a href="rapports.html" class="nav-item">Rapports</a>
+        <a href="evaluations.html" class="nav-item active">Évaluations</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar" id="user-avatar">T</div>
+          <div class="sidebar-user-info">
+            <span id="user-name">Chargement...</span>
+            <span>Tuteur</span>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="logout()">Déconnexion</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <div class="page-header">
+        <h1>Mes évaluations</h1>
+        <p>Évaluations de fin de stage que vous avez rédigées</p>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Stagiaire</th>
+              <th>Stage</th>
+              <th>Note</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="evaluations-table">
+            <tr><td colspan="5" style="text-align:center; color:#64748B;">Chargement...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Modal détail évaluation -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" style="max-width:600px;">
+      <div class="modal-header">
+        <h2>Détail de l'évaluation</h2>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div id="modal-content"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/tuteur-evaluations.js"></script>
+
+</body>
+</html>

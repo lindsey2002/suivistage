@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SuiviStage — Dashboard Stagiaire</title>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+</head>
+<body>
+
+  <div class="dashboard-layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon"></div>
+        <span>SuiviStage</span>
+      </div>
+      <div class="sidebar-role"><span>Stagiaire</span></div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item active">Dashboard</a>
+        <a href="rapports.html" class="nav-item">Mes rapports</a>
+        <a href="evaluation.html" class="nav-item">Mon évaluation</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar" id="user-avatar">S</div>
+          <div class="sidebar-user-info">
+            <span id="user-name">Chargement...</span>
+            <span>Stagiaire</span>
+          </div>
+        </div>
+        <button class="btn-logout" onclick="logout()">Déconnexion</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <div class="page-header">
+        <h1>Tableau de bord</h1>
+        <p>Bienvenue dans votre espace stagiaire</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon blue">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span id="stat-total">—</span>
+            <span>Rapports soumis</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span id="stat-valides">—</span>
+            <span>Validés</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span id="stat-attente">—</span>
+            <span>En attente</span>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon red">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span id="stat-rejetes">—</span>
+            <span>Rejetés</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Derniers rapports -->
+      <div class="card" style="margin-bottom:24px;">
+        <div class="page-topbar" style="margin-bottom:16px;">
+          <h2 style="font-size:16px; font-weight:600;">Mes derniers rapports</h2>
+          <a href="rapports.html" class="btn btn-secondary" style="font-size:13px;">Voir tout</a>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Semaine</th>
+                <th>Période</th>
+                <th>Soumission</th>
+                <th>Statut</th>
+              </tr>
+            </thead>
+            <tbody id="recent-rapports">
+              <tr><td colspan="4" style="text-align:center; color:#64748B;">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/stagiaire-dashboard.js"></script>
+
+</body>
+</html>
