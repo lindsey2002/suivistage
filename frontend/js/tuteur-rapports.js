@@ -103,7 +103,7 @@ async function validerRapport(statut) {
   const commentaire_tuteur = document.getElementById('input-commentaire').value
 
   if (statut === 'rejete' && !commentaire_tuteur.trim()) {
-    alert('Un commentaire est obligatoire en cas de rejet.')
+    showToast('Un commentaire est obligatoire en cas de rejet.', 'error')
     return
   }
 
@@ -115,9 +115,10 @@ async function validerRapport(statut) {
 
   if (response.ok) {
     closeModal()
+    showToast(statut === 'valide' ? 'Rapport validé !' : 'Rapport rejeté.', statut === 'valide' ? 'success' : 'error')
     loadRapports()
   } else {
-    alert(data.message || 'Erreur lors de la validation.')
+    showToast(data.message || 'Erreur lors de la validation.', 'error')
   }
 }
 
@@ -126,3 +127,4 @@ function closeModal() {
 }
 
 loadRapports()
+loadSidebarBadge()

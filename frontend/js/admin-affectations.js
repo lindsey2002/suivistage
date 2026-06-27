@@ -76,6 +76,7 @@ async function createAffectation() {
 
   if (response.ok) {
     closeModal()
+    showToast('Affectation créée !')
     loadAffectations()
   } else {
     errorDiv.style.display = 'block'
@@ -84,9 +85,11 @@ async function createAffectation() {
 }
 
 async function deleteAffectation(id) {
-  if (!confirm('Confirmer la suppression ?')) return
-  await apiRequest(`/admin/affectations/${id}`, 'DELETE')
-  loadAffectations()
+  confirmDelete('Voulez-vous vraiment supprimer cette affectation ?', async () => {
+    await apiRequest(`/admin/affectations/${id}`, 'DELETE')
+    showToast('Affectation supprimée.', 'info')
+    loadAffectations()
+  })
 }
 
 loadAffectations()

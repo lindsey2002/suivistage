@@ -84,3 +84,4 @@ function closeModal() {
 }
 
 loadEvaluations()
+loadSidebarBadge()

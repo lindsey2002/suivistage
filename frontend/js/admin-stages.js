@@ -81,6 +81,7 @@ async function saveStage() {
 
   if (response.ok) {
     closeModal()
+    showToast(editingId ? 'Stage mis à jour !' : 'Stage créé !')
     loadStages()
   } else {
     errorDiv.style.display = 'block'
@@ -89,9 +90,11 @@ async function saveStage() {
 }
 
 async function deleteStage(id) {
-  if (!confirm('Confirmer la suppression ?')) return
-  await apiRequest(`/admin/stages/${id}`, 'DELETE')
-  loadStages()
+  confirmDelete('Voulez-vous vraiment supprimer ce stage ?', async () => {
+    await apiRequest(`/admin/stages/${id}`, 'DELETE')
+    showToast('Stage supprimé.', 'info')
+    loadStages()
+  })
 }
 
 loadStages()

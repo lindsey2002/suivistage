@@ -215,3 +215,33 @@ tr:hover td {
 .filter-select:focus {
   border-color: #2563EB;
 }
+/* ── Toasts ──────────────────────────── */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toast {
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  animation: slideIn 0.3s ease;
+  min-width: 260px;
+}
+
+.toast-success { background-color: #22C55E; }
+.toast-error   { background-color: #EF4444; }
+.toast-info    { background-color: #2563EB; }
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

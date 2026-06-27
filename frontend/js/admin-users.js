@@ -15,6 +15,7 @@ async function loadUsers() {
 }
 
 function renderUsers(users) {
+  const currentUser = getUser()
   const tbody = document.getElementById('users-table')
   if (users.length === 0) {
     tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748B;">Aucun utilisateur</td></tr>'
@@ -22,17 +23,18 @@ function renderUsers(users) {
   }
   tbody.innerHTML = users.map(u => `
     <tr>
-      <td>${u.prenom} ${u.nom}</td>
+      <td>${u.prenom} ${u.nom} ${u.id === currentUser.id ? '<span class="badge badge-valide">Vous</span>' : ''}</td>
       <td>${u.email}</td>
       <td><span class="badge badge-${u.role === 'administrateur' ? 'valide' : u.role === 'tuteur' ? 'attente' : 'archive'}">${u.role}</span></td>
       <td><span class="badge ${u.est_actif ? 'badge-valide' : 'badge-rejete'}">${u.est_actif ? 'Actif' : 'Inactif'}</span></td>
       <td>
+        ${u.id !== currentUser.id ? `
         <button class="btn btn-secondary" style="font-size:12px; padding:5px 10px;" onclick="toggleUser(${u.id})">
           ${u.est_actif ? 'Désactiver' : 'Activer'}
         </button>
         <button class="btn btn-danger" style="font-size:12px; padding:5px 10px; margin-left:6px;" onclick="deleteUser(${u.id})">
           Supprimer
-        </button>
+        </button>` : '<span style="font-size:13px; color:#64748B;">—</span>'}
       </td>
     </tr>
   `).join('')
@@ -49,13 +51,16 @@ function filterUsers() {
 
 async function toggleUser(id) {
   await apiRequest(`/admin/users/${id}/toggle`, 'POST')
+  showToast('Statut utilisateur mis à jour.')
   loadUsers()
 }
 
 async function deleteUser(id) {
-  if (!confirm('Confirmer la suppression ?')) return
-  await apiRequest(`/admin/users/${id}`, 'DELETE')
-  loadUsers()
+  confirmDelete('Voulez-vous vraiment supprimer cet utilisateur ?', async () => {
+    await apiRequest(`/admin/users/${id}`, 'DELETE')
+    showToast('Utilisateur supprimé.', 'info')
+    loadUsers()
+  })
 }
 
 function openModal() {
@@ -82,6 +87,7 @@ async function createUser() {
 
   if (response.ok) {
     closeModal()
+    showToast('Utilisateur créé avec succès !')
     loadUsers()
   } else {
     errorDiv.style.display = 'block'

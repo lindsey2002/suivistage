@@ -49,3 +49,4 @@ async function loadDashboard() {
 }
 
 loadDashboard()
+loadSidebarBadge()

@@ -72,7 +72,7 @@ async function submitEvaluation() {
 
   if (response.ok) {
     closeModal()
-    alert('Évaluation enregistrée avec succès !')
+    showToast('Évaluation enregistrée avec succès !')
   } else {
     errorDiv.style.display = 'block'
     errorDiv.textContent = data.message || 'Erreur lors de l\'enregistrement.'
@@ -80,3 +80,4 @@ async function submitEvaluation() {
 }
 
 loadStagiaires()
+loadSidebarBadge()

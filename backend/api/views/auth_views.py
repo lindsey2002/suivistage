@@ -106,6 +106,11 @@ class LoginView(APIView):
                 {'message': 'Identifiants incorrects.'},
                 status=status.HTTP_401_UNAUTHORIZED,
             )
+        if not user.est_actif:
+            return Response(
+                {'message': 'Votre compte a été désactivé. Contactez l\'administrateur.'},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
         token = generate_token(user)
         return Response({
             'message': 'Connexion réussie.',

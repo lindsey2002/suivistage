@@ -97,6 +97,7 @@ async function saveRapport() {
 
   if (response.ok) {
     closeCreateModal()
+    showToast(editingId ? 'Rapport mis à jour !' : 'Rapport soumis avec succès !')
     loadRapports()
   } else {
     errorDiv.style.display = 'block'
@@ -159,7 +160,7 @@ async function addLivrable() {
   const url_ou_chemin = document.getElementById('input-livrable-url').value
 
   if (!nom || !url_ou_chemin) {
-    alert('Veuillez remplir tous les champs.')
+    showToast('Veuillez remplir tous les champs.', 'error')
     return
   }
 
@@ -173,10 +174,10 @@ async function addLivrable() {
     document.getElementById('input-livrable-nom').value = ''
     document.getElementById('input-livrable-url').value = ''
     closeDetailModal()
+    showToast('Livrable ajouté !')
     loadRapports()
-    alert('Livrable ajouté avec succès !')
   } else {
-    alert(data.message || 'Erreur lors de l\'ajout.')
+    showToast(data.message || 'Erreur lors de l\'ajout.', 'error')
   }
 }
 
