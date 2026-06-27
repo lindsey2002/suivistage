@@ -1,0 +1,124 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+}
+
+/* ── Côté gauche ─────────────────────── */
+.auth-left {
+  flex: 1;
+  background-color: #1E293B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+}
+
+.auth-left-content {
+  max-width: 400px;
+  text-align: center;
+}
+
+.auth-left-content h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.auth-left-content p {
+  font-size: 15px;
+  color: #94A3B8;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+.auth-illustration {
+  width: 100%;
+  max-width: 340px;
+}
+
+/* ── Côté droit ──────────────────────── */
+.auth-right {
+  width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: #F8FAFC;
+}
+
+.auth-card {
+  width: 100%;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #E2E8F0;
+  padding: 40px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.auth-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.auth-logo-icon {
+  width: 48px;
+  height: 48px;
+  background-color: #2563EB;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.auth-logo-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: white;
+}
+
+.auth-logo h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1E293B;
+}
+
+.auth-logo p {
+  font-size: 14px;
+  color: #64748B;
+  margin-top: 4px;
+}
+
+.auth-submit {
+  width: 100%;
+  padding: 11px;
+  background-color: #2563EB;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+
+.auth-submit:hover {
+  background-color: #1E40AF;
+}
+
+/* ── Responsive ──────────────────────── */
+@media (max-width: 768px) {
+  .auth-left {
+    display: none;
+  }
+  .auth-right {
+    width: 100%;
+    padding: 24px;
+  }
+}
