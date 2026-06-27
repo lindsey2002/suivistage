@@ -14,10 +14,11 @@ function getUser() {
 function checkAuth() {
   const token = getToken()
   if (!token) {
-    window.location.href = '/index.html'
+    window.location.href = '/frontend/index.html'
     return false
   }
   return true
+  
 }
 
 // Requête API générique avec token
@@ -43,7 +44,9 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
 
 // Déconnexion
 async function logout() {
-  await apiRequest('/logout', 'POST')
+   try {
+    await apiRequest('/logout', 'POST')
+  } catch (e) {}
   localStorage.clear()
-  window.location.href = '/index.html'
+  window.location.href = '/frontend/index.html'
 }
