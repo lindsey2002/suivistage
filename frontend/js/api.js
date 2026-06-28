@@ -1,16 +1,15 @@
 const API_URL = 'http://localhost:8002/api/v1'
 
-// Récupérer le token stocké
+
 function getToken() {
   return localStorage.getItem('token')
 }
 
-// Récupérer l'utilisateur connecté
+
 function getUser() {
   return JSON.parse(localStorage.getItem('user'))
 }
 
-// Vérifier si connecté, sinon rediriger
 function checkAuth() {
   const token = getToken()
   if (!token) {
@@ -21,7 +20,6 @@ function checkAuth() {
   
 }
 
-// Requête API générique avec token
 async function apiRequest(endpoint, method = 'GET', body = null) {
   const options = {
     method,
