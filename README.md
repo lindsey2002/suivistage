@@ -42,49 +42,181 @@ Plateforme de suivi des stagiaires en entreprise. Les stagiaires enregistrent le
 ## Structure du projet
 
 suivistage/
+
 ├── backend/                  ← Django REST Framework
+
 │   ├── api/
+
 │   │   ├── models.py         ← User, Stage, Affectation, Rapport, Livrable, Evaluation
+
 │   │   ├── serializers.py    ← Validation + transformation JSON
+
 │   │   ├── authentication.py ← Middleware JWT custom
+
 │   │   ├── permissions.py    ← IsAdministrateur, IsTuteur, IsStagiaire
+
 │   │   ├── urls.py           ← Routes API v1
+
 │   │   └── views/
+
 │   │       ├── auth_views.py
+
 │   │       ├── stagiaire_views.py
+
 │   │       ├── tuteur_views.py
+
 │   │       └── admin_views.py
+
 │   ├── suivi_stage/
+
 │   │   ├── settings.py
+
 │   │   └── urls.py
+
 │   ├── .env.example
+
 │   ├── manage.py
+
 │   └── requirements.txt
+
 └── frontend/                 ← HTML · CSS · JavaScript
+
 ├── index.html            ← Login
+
 ├── admin/
+
 │   ├── dashboard.html
+
 │   ├── users.html
+
 │   ├── stages.html
+
 │   ├── affectations.html
+
 │   ├── rapports.html
+
 │   └── evaluations.html
+
 ├── tuteur/
+
 │   ├── dashboard.html
+
 │   ├── stagiaires.html
+
 │   ├── rapports.html
+
 │   └── evaluations.html
+
 ├── stagiaire/
+
 │   ├── dashboard.html
+
 │   ├── rapports.html
+
 │   └── evaluation.html
+
 ├── css/
+
 │   ├── main.css
+
 │   ├── auth.css
+
 │   └── dashboard.css
+
 └── js/
+
 ├── api.js
+
 ├── auth.js
+
+└── ...suivistage/
+
+├── backend/                  ← Django REST Framework
+
+│   ├── api/
+
+│   │   ├── models.py         ← User, Stage, Affectation, Rapport, Livrable, Evaluation
+
+│   │   ├── serializers.py    ← Validation + transformation JSON
+
+│   │   ├── authentication.py ← Middleware JWT custom
+
+│   │   ├── permissions.py    ← IsAdministrateur, IsTuteur, IsStagiaire
+
+│   │   ├── urls.py           ← Routes API v1
+
+│   │   └── views/
+
+│   │       ├── auth_views.py
+
+│   │       ├── stagiaire_views.py
+
+│   │       ├── tuteur_views.py
+
+│   │       └── admin_views.py
+
+│   ├── suivi_stage/
+
+│   │   ├── settings.py
+
+│   │   └── urls.py
+
+│   ├── .env.example
+
+│   ├── manage.py
+
+│   └── requirements.txt
+
+└── frontend/                 ← HTML · CSS · JavaScript
+
+├── index.html            ← Login
+
+├── admin/
+
+│   ├── dashboard.html
+
+│   ├── users.html
+
+│   ├── stages.html
+
+│   ├── affectations.html
+
+│   ├── rapports.html
+
+│   └── evaluations.html
+
+├── tuteur/
+
+│   ├── dashboard.html
+
+│   ├── stagiaires.html
+
+│   ├── rapports.html
+
+│   └── evaluations.html
+
+├── stagiaire/
+
+│   ├── dashboard.html
+
+│   ├── rapports.html
+
+│   └── evaluation.html
+
+├── css/
+
+│   ├── main.css
+
+│   ├── auth.css
+
+│   └── dashboard.css
+
+└── js/
+
+├── api.js
+
+├── auth.js
+
 └── ...
 
 ---
@@ -249,4 +381,5 @@ Le backend vérifie le token via `JWTAuthentication` à chaque requête entrante
 ## Auteur
 
 Heredia Koumba
+
 Projet réalisé dans le cadre du cours TechnoWeb Back-End — L3 Informatique ISI.
